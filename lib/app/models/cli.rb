@@ -114,7 +114,7 @@ class CLI
         puts "Here are all of your plants:"  
         x = 1
         plants = @@user.plants.map{|plant|plant.name}
-        plants.each do |plant|
+        plants.each do |plant|    
             puts "#{x}. #{plant}"
             x += 1
         end
@@ -129,9 +129,9 @@ class CLI
 
 
         if option2 == 'Water My Plants'
-            
+            self.water_my_plants 
         elsif option2 == "Check My Plants' Status' "
-            
+            ## need code 
         elsif option2 == 'Plant More plants'
             self.menu_2
         elsif option2 == 'Return to Main Menu'
@@ -139,6 +139,23 @@ class CLI
         elsif option2 == 'Quit'
             puts "Bye!"
         end
+    end
+
+    def water_my_plants
+        system("clear")
+        plants = @@user.plants.map{|plant|plant.name}
+        
+      
+        
+        option2 = @@prompt.select("Which plant would you like to water?") do |menu|
+            x = 0
+            plants.each do |plant| 
+                x += 1
+                menu.choice "#{x}. #{plant}"
+            end
+
+        end
+
     end
 
 
