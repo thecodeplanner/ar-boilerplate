@@ -1,0 +1,3 @@
+need to fix quit from first menu
+
+need to add message if new user and garden is empty 
