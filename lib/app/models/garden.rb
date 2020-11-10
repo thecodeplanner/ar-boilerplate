@@ -10,16 +10,17 @@ class Garden < ActiveRecord::Base
         password = @@prompt.mask("What is your password?")
         garden_name = @@prompt.ask("What would you like to name your garden?")
         user = self.create(username: username, password: password, garden_name: garden_name)
-        return true
+        user
     end
 
-    def self.login
+    def self.login #user needs a way out
         found = false
         until found == true
             username = @@prompt.ask("What is your username?")
             password = @@prompt.mask("What is your password?")
+            user = self.find_by(username: username, password: password)
             if self.find_by(username: username, password: password)
-                return true
+                return user
             else 
                 puts "User not found, please try again."
             end
