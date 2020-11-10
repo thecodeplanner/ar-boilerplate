@@ -1,5 +1,23 @@
-need to fix quit from menu
 
-need to add message if new user and garden is empty 
 
 understand @@user.plants vs. Gardenplant.all.etc.
+
+can't view garden after harvesting?? only shows after you exit program and log back in 
+
+
+learn active record
+learn git
+refactor code 
+
+
+
+create cool ascii art
+create a visual representation of a user
+create a visual representation of a garden
+create visual representations of plants
+if you overwater, plant dies
+
+
+
+give more plant options 
+fix user interactions to make smooth/exciting

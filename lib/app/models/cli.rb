@@ -126,6 +126,7 @@ class CLI
 
     end
     
+
     def menu_2
         puts ""            
         option2 = @@prompt.select("\nWhat would you like to do next?") do |menu|
@@ -147,10 +148,21 @@ class CLI
             self.plant_in_my_garden
         elsif option2 == 'Harvest my garden'
             system("clear")
-            @@user.plants.destroy_all
-            @@user.save
-            puts "Sorry to see your garden go!"
-            self.menu_2
+            option3 = @@prompt.select(puts "Are you sure you wish to delete your garden?") do |menu|
+                menu.choice "Yes"
+                menu.choice "No"
+            end
+            if option3 == "Yes"
+                system("clear")
+                #Gardenplant.all.select{|gp|gp.garden==@@user}
+                @@user.plants.destroy_all
+                @@user.save
+                puts "Sorry to see your garden go!"
+                self.menu_2
+            elsif option3 == "No"
+                self.menu_2
+            end
+
         elsif option2 == 'Rename my garden'
             system("clear")
             puts "What would you like to rename your garden to?"
