@@ -8,6 +8,8 @@ class CLI
     @@plants = []
     @@gardenplant = [] 
     @@prompt = TTY::Prompt.new
+    @@gp_array = []
+    
 
 
     def load_plants
@@ -118,20 +120,50 @@ class CLI
             puts "#{x}. #{plant}"
             x += 1
         end
-                    
-        option2 = @@prompt.select("Your garden is looking fabulous! What would you like to do next?") do |menu|
+       self.post_garden_viewing
+       
+    end
+
+    def water_my_plants
+        system("clear")
+        @@gp_array = Gardenplant.all.select{|gp|gp.garden == @@user}
+        option = @@prompt.select("Which plant would you like to water?") do |menu|
+            x = 0
+            @@gp_array.each do |gp|
+                x+=1
+                menu.choice "#{x}. #{gp.plant.name}"
+            end 
+        end
+
+        index = option.gsub(/[^\d]/,"").to_i
+        index -= 1
+        
+        gp_to_water = @@gp_array[index]
+       
+        print "Yay! You have helped your plant go from: #{gp_to_water.status} "
+
+        gp_to_water.water_plant
+
+        puts "to: #{gp_to_water.status}."
+
+        self.post_garden_viewing
+
+    end
+    
+    def post_garden_viewing
+        puts ""            
+        option2 = @@prompt.select("Your garden is looking fabulous! \n\nWhat would you like to do next?") do |menu|
             menu.choice 'Water My Plants'
             menu.choice "Check My Plants' Status' "
             menu.choice 'Plant More plants'
             menu.choice 'Return to Main Menu'
             menu.choice 'Quit'
         end
-
-
         if option2 == 'Water My Plants'
             self.water_my_plants 
         elsif option2 == "Check My Plants' Status' "
-            ## need code 
+
+            puts @@gp_array
         elsif option2 == 'Plant More plants'
             self.menu_2
         elsif option2 == 'Return to Main Menu'
@@ -141,40 +173,6 @@ class CLI
         end
     end
 
-    def water_my_plants
-        system("clear")
-        plants = @@user.plants.map{|plant|plant.name}
-
-
-          
-        option = @@prompt.select("Which plant would you like to water?") do |menu|
-            x = 0
-            plants.each do |plant| 
-                x += 1
-                menu.choice "#{x}. #{plant}"
-            end
-        end
-        option.tr!("0-9", "")
-        index = "?"
-        
-        @@user.plants.all[index]
-
-        option.tr!(".", "")
-        option.tr!(" ", "")
-
-        plant = Plant.all.find_by(name: "#{option}")
-
-        plant_to_water = Gardenplant.all.find_by(garden: @@user, plant: plant.id)
-
-        puts "Yay! You have helped your plant turn from a: #{plant_to_water.status}"
-        plant_to_water.water_plant
-        puts "into a: #{plant_to_water.status}"
-
-        puts "#{@@user.gardenplants.map{|gp|gp.status}}"
-
-    end
-
-    ## https://stackoverflow.com/questions/28335460/how-to-remove-numbers-from-a-string
 
 end
 
