@@ -27,21 +27,24 @@ class Garden < ActiveRecord::Base
                 option = @@prompt.select("User Not Found") do |menu|
                     menu.choice 'Try Again'
                     menu.choice 'Return to Main Menu'
-                    menu.choice 'Quit'
                 end
 
                 if option == 'Try Again'
                     found = false
                 elsif option == 'Return to Main Menu'
                     return false
-                elsif option == 'Quit'
-                    # needs completion
                 end
             end
 
         end
 
     end
+
+    def plant_plant_in_garden(plant)
+        Gardenplant.create(garden_id: self.id, plant_id: plant.id, status: "seedling")
+    end
+
+end
 
     # def see_my_plan
     #     self.plants 
@@ -54,13 +57,4 @@ class Garden < ActiveRecord::Base
     # def view
     #     self.gardenplants
     # end
-
-    def plant_plant_in_garden(plant)
-        Gardenplant.create(garden_id: self.id, plant_id: plant.id, status: "seedling")
-    end
-
-   
-
-
-end
 

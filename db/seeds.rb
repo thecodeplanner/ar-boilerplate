@@ -6,9 +6,6 @@ Gardenplant.destroy_all
 # melissa = Garden.create(username: "melissa", password: "123", garden_name: "zen")
 
 fern = Plant.create(name: "fern")
-
-fern_gp = Gardenplant.all.find_by(name: fern)
-
 cactus = Plant.create(name: "cactus")
 flower = Plant.create(name: "flower")
 

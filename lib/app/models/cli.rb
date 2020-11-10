@@ -7,7 +7,6 @@ class CLI
     @@user = nil
     @@gardenplant = [] 
     @@prompt = TTY::Prompt.new
-    @@gp_array = []
 
     def greet
         system("clear")
@@ -30,7 +29,7 @@ class CLI
             self.menu
         elsif welcome == 'Quit'
             puts "See you later!"
-        end 
+        end       
     end
 
     def menu
@@ -38,6 +37,7 @@ class CLI
         option = @@prompt.select("What would you like to do today?") do |menu|
             menu.choice 'Plant in my garden'
             menu.choice 'View my garden'
+            menu.choice 'Switch User'
             menu.choice 'Quit'
         end
 
@@ -45,6 +45,8 @@ class CLI
             self.plant_in_my_garden
         elsif option == 'View my garden'
             self.view_my_garden  
+        elsif option == 'Switch User'
+            self.greet
         elsif option == 'Quit'
             puts "Bye!"
         end
@@ -77,67 +79,60 @@ class CLI
 
     end
 
-    # def menu_3
-    #     selection = @@prompt.select("What would you like to do next") do |menu|
-    #         menu.choice 'View My Garden'
-    #         menu.choice 'Plant Another Plant'
-    #         menu.choice 'Main menu'
-    #         menu.choice 'Quit'
-    #     end
-
-    # end
-
     def view_my_garden
         system("clear")
         puts "Welcome to #{@@user.garden_name}!"
-        # if @@user.plants.empty?
-        #     puts "Sorry you do not have any plants yet." 
-        #     self.menu_2
-        # else
-            puts "Here are all of your plants:"  
-            x = 1
-            plants = @@user.plants.map{|plant|plant.name}
-            plants.each do |plant|    
-                puts "#{x}. #{plant}"
-                x += 1
+        if @@user.plants.empty?
+            puts "Sorry you do not have any plants yet." 
+            self.menu_2
+        else
+        puts ""
+        puts "Here are all of your plants:" 
+        x = 1
+        gp = Gardenplant.all.select{|gp|gp.garden==@@user}
+       # @@user.plants.map{|plant|plant.name}
+
+        gp.each do |gp|    
+            puts "#{x}. #{gp.plant.name}"
+            x += 1
             end
             self.menu_2
-        # end
-       
+        end
     end
 
     def water_my_plants
         system("clear")
-        @@gp_array = Gardenplant.all.select{|gp|gp.garden == @@user}
-        option = @@prompt.select("Which plant would you like to water?") do |menu|
-            x = 0
-            @@gp_array.each do |gp|
-                x+=1
-                menu.choice "#{x}. #{gp.plant.name}"
-            end 
+        if @@user.plants.empty?
+            puts "Sorry you do not have any plants yet." 
+            self.menu_2
+        else
+            gp_array = Gardenplant.all.select{|gp|gp.garden == @@user}
+        
+            option = @@prompt.select("Which plant would you like to water?") do |menu|
+                x = 0
+                gp_array.each do |gp|
+                    x+=1
+                    menu.choice "#{x}. #{gp.plant.name}"
+                end 
+            end
+            index = option.gsub(/[^\d]/,"").to_i
+            index -= 1
+            gp_to_water = gp_array[index]
+            print "Yay! You have helped your plant go from: #{gp_to_water.status} "
+            gp_to_water.water_plant
+            puts "to: #{gp_to_water.status}."
+            self.menu_2
         end
-        index = option.gsub(/[^\d]/,"").to_i
-        index -= 1
-    
-        gp_to_water = @@gp_array[index]
-       
-        print "Yay! You have helped your plant go from: #{gp_to_water.status} "
-
-        gp_to_water.water_plant
-
-        puts "to: #{gp_to_water.status}."
-
-        self.menu_2
 
     end
     
     def menu_2
         puts ""            
         option2 = @@prompt.select("\nWhat would you like to do next?") do |menu|
+            menu.choice 'Plant in my garden'
             menu.choice 'Water My Plants'
             menu.choice 'View my garden'
             menu.choice "Check My Plants' Status' "
-            menu.choice 'Plant in my garden'
             menu.choice 'Harvest my garden'
             menu.choice 'Rename my garden'
             menu.choice 'Return to Main Menu'
@@ -151,6 +146,7 @@ class CLI
         elsif option2 == 'Plant in my garden'
             self.plant_in_my_garden
         elsif option2 == 'Harvest my garden'
+            system("clear")
             @@user.plants.destroy_all
             @@user.save
             puts "Sorry to see your garden go!"
@@ -168,13 +164,20 @@ class CLI
 
     def check_my_plants_status
         system("clear")
-        gp = Gardenplant.all.select{|gp|gp.garden==@@user}
-        x = 0
-        gp.each do |gp|
-            x += 1
-            puts "#{x}. #{gp.plant.name}: #{gp.status}"
+        if @@user.plants.empty?
+            puts "Sorry you do not have any plants yet." 
+            self.menu_2
+        else
+            system("clear")
+            puts "Your Plants' Status'"
+            gp = Gardenplant.all.select{|gp|gp.garden==@@user}
+            x = 0
+            gp.each do |gp|
+                x += 1
+                puts "#{x}. #{gp.plant.name}: #{gp.status}"
+            end
+            self.menu_2
         end
-        self.menu_2
     end
 
 end

@@ -1,3 +1,5 @@
-need to fix quit from first menu
+need to fix quit from menu
 
 need to add message if new user and garden is empty 
+
+understand @@user.plants vs. Gardenplant.all.etc.
