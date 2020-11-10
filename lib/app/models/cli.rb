@@ -31,8 +31,15 @@ class CLI
         end
 
         if welcome == 'Login'
-            @@user = Garden.login
+
+            if @@user = Garden.login
+                true
+            else
+                self.greet
+             end
+
         elsif welcome == 'Sign Up'
+
             @@user = Garden.signup
         elsif welcome == 'Quit'
             puts "See you later!"
@@ -53,9 +60,8 @@ class CLI
         if option == 'Plant new plants in my garden'
             menu_2
         elsif option == 'View my garden' 
-            puts"#{@@plants}"
-            #puts "Your garden name is: #{@@user.garden_name}"
-            ##still need to access plants!!
+            puts "#{@@user.plants.map{|plant|plant.name}}"
+            
         elsif option == 'Harvest my garden'
             @@user.plants.destroy_all
             @@user.save
@@ -68,6 +74,8 @@ class CLI
     end
 
     def menu_2
+        prompt = TTY::Prompt.new
+        system("clear")
         plant_selection = prompt.select("What would you like to plant today?") do |menu|
             menu.choice 'Fern'
             menu.choice 'Cactus'
@@ -75,23 +83,22 @@ class CLI
         end
 
         if plant_selection == 'Fern'
-            
+            plant = Plant.all.find_by(name: "fern")
+            @@user.plant_plant_in_garden(plant)
         elsif plant_selection == 'Cactus'
-
+            plant = Plant.all.find_by(name: "cactus")
+            @@user.plant_plant_in_garden(plant)
         elsif plant_selection == 'Flower'
-            
+            plant = Plant.all.find_by(name: "flower")
+            @@user.plant_plant_in_garden(plant)
+            ##create a back option
         end
     end
 
-    Plant.first
-
-    def plant_plant_in_garden(plant)
-        Gardenplant.create(garden_id: self.id, plant_id: plant.id)
-    end
-
-    def add_favorite_snack(recipe)
-        FavoriteSnack.create(snacker_id: self.id, recipe_id: recipe.id, name: recipe.name)
-    end
+    
+    # def add_favorite_snack(recipe)
+    #     FavoriteSnack.create(snacker_id: self.id, recipe_id: recipe.id, name: recipe.name)
+    # end
 
 
 

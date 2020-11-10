@@ -19,31 +19,48 @@ class Garden < ActiveRecord::Base
             username = @@prompt.ask("What is your username?")
             password = @@prompt.mask("What is your password?")
             user = self.find_by(username: username, password: password)
-            if self.find_by(username: username, password: password)
+            if user
+                found = true 
                 return user
-            else 
-                puts "User not found, please try again."
+            else
+                system("clear") 
+                option = @@prompt.select("User Not Found") do |menu|
+                    menu.choice 'Try Again'
+                    menu.choice 'Return to Main Menu'
+                    menu.choice 'Quit'
+                end
+
+                if option == 'Try Again'
+                    found = false
+                elsif option == 'Return to Main Menu'
+                    return false
+                elsif option == 'Quit'
+                    # needs completion
+                end
             end
+
         end
+
     end
 
-# gardens
+    # def see_my_plan
+    #     self.plants 
+    # end
 
-# username        password        garden_name
+    # def plant_count
+    #     self.plants.count
+    # end
 
-# melissa         123             gardeny
+    # def view
+    #     self.gardenplants
+    # end
 
-    def see_my_plants
-        self.plants 
+    def plant_plant_in_garden(plant)
+        Gardenplant.create(garden_id: self.id, plant_id: plant.id)
     end
 
-    def plant_count
-        self.plants.count
-    end
+   
 
-    def view
-        self.gardenplants
-    end
 
 end
 
