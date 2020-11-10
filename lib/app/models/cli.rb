@@ -144,21 +144,37 @@ class CLI
     def water_my_plants
         system("clear")
         plants = @@user.plants.map{|plant|plant.name}
-        
-      
-        
-        option2 = @@prompt.select("Which plant would you like to water?") do |menu|
+
+
+          
+        option = @@prompt.select("Which plant would you like to water?") do |menu|
             x = 0
             plants.each do |plant| 
                 x += 1
                 menu.choice "#{x}. #{plant}"
             end
-
         end
+        option.tr!("0-9", "")
+        index = "?"
+        
+        @@user.plants.all[index]
+
+        option.tr!(".", "")
+        option.tr!(" ", "")
+
+        plant = Plant.all.find_by(name: "#{option}")
+
+        plant_to_water = Gardenplant.all.find_by(garden: @@user, plant: plant.id)
+
+        puts "Yay! You have helped your plant turn from a: #{plant_to_water.status}"
+        plant_to_water.water_plant
+        puts "into a: #{plant_to_water.status}"
+
+        puts "#{@@user.gardenplants.map{|gp|gp.status}}"
 
     end
 
-
+    ## https://stackoverflow.com/questions/28335460/how-to-remove-numbers-from-a-string
 
 end
 

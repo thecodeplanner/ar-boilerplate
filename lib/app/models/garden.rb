@@ -56,7 +56,7 @@ class Garden < ActiveRecord::Base
     # end
 
     def plant_plant_in_garden(plant)
-        Gardenplant.create(garden_id: self.id, plant_id: plant.id)
+        Gardenplant.create(garden_id: self.id, plant_id: plant.id, status: "seedling")
     end
 
    
