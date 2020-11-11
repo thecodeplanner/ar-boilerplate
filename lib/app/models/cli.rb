@@ -14,7 +14,7 @@ class CLI
     def welcome 
         system('clear')
         puts @@artii.asciify("Let's Play Zen Garden!")
-        sleep(2.5)
+        sleep(1.0)
         self.greet
     end
 
@@ -99,10 +99,9 @@ class CLI
         puts ""
         puts "Here are all of your plants:" 
         x = 1
-        gp = Gardenplant.all.select{|gp|gp.garden==@@user}
-       # @@user.plants.map{|plant|plant.name}
-
-        gp.each do |gp|    
+        gp = @@user.gardenplants.all ## whyy???
+        gp.each do |gp|
+        # @@user.gardenplants.all.each do |gp|
             puts "#{x}. #{gp.plant.name}"
             x += 1
             end
@@ -116,8 +115,7 @@ class CLI
             puts "Sorry you do not have any plants yet." 
             self.menu_2
         else
-            gp_array = Gardenplant.all.select{|gp|gp.garden == @@user}
-        
+            gp_array = @@user.gardenplants.all
             option = @@prompt.select("Which plant would you like to water?") do |menu|
                 x = 0
                 gp_array.each do |gp|
@@ -127,6 +125,7 @@ class CLI
             end
             index = option.gsub(/[^\d]/,"").to_i
             index -= 1
+
             gp_to_water = gp_array[index]
             if gp_to_water.status == "grown"
                 gp_to_water.water_plant 
@@ -174,7 +173,10 @@ class CLI
             end
             if option3 == "Yes"
                 system("clear")
-                @@user.gardenplants.destroy_all
+                #Gardenplant.all.select{|gp|gp.garden==@@user}
+                # @@user.plants.delete_all
+                # @@user.save
+                @@user.gardenplants.all.destroy_all
                 puts "Sorry to see your garden go!"
                 self.menu_2
             elsif option3 == "No"
@@ -200,9 +202,10 @@ class CLI
         else
             system("clear")
             puts "Your Plants' Status'"
-            gp = Gardenplant.all.select{|gp|gp.garden==@@user}
+            # gp = Gardenplant.all.select{|gp|gp.garden==@@user}
+            # gp.each do |gp|
             x = 0
-            gp.each do |gp|
+            @@user.gardenplants.all.each do |gp|
                 x += 1
                 puts "#{x}. #{gp.plant.name}: #{gp.status}"
             end

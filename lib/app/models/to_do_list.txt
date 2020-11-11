@@ -10,7 +10,6 @@ learn git
 refactor code 
 
 
-
 create cool ascii art
 create a visual representation of a user
 create a visual representation of a garden
