@@ -14,11 +14,11 @@ class Gardenplant < ActiveRecord::Base
         end
         self.save
     end
+end
 
-    # def status_of_plant
+  # def status_of_plant
     #     self.status
     # end
-end
 
 
 

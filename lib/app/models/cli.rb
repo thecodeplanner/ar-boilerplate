@@ -1,12 +1,22 @@
 require "tty-prompt"
 require "pry"
-# require_relative '../config/environment'
-# require_all 'lib'
+require 'pastel'
 
 class CLI
     @@user = nil
-    #@@gardenplant = [] 
     @@prompt = TTY::Prompt.new
+    @@artii = Artii::Base.new :font => 'slant'
+    
+    # @@artii = Artii::Base.new 
+    # a = Artii::Base.new 
+    #     puts a.asciify('HackJack!').red.bold
+
+    def welcome 
+        system('clear')
+        puts @@artii.asciify("Let's Play Zen Garden!")
+        sleep(2.5)
+        self.greet
+    end
 
     def greet
         system("clear")
@@ -164,9 +174,7 @@ class CLI
             end
             if option3 == "Yes"
                 system("clear")
-                #Gardenplant.all.select{|gp|gp.garden==@@user}
-                @@user.plants.delete_all
-                @@user.save
+                @@user.gardenplants.destroy_all
                 puts "Sorry to see your garden go!"
                 self.menu_2
             elsif option3 == "No"

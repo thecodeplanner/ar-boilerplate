@@ -4,7 +4,6 @@ class Garden < ActiveRecord::Base
     has_many :plants, through: :gardenplants
     @@prompt = TTY::Prompt.new
 
-
     def self.signup
         username = @@prompt.ask("What is your username?")
         password = @@prompt.mask("What is your password?")
