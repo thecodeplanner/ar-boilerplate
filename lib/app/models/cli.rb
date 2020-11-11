@@ -16,7 +16,7 @@ class CLI
 
     def greet
         system("clear")
-        welcome = @@prompt.select("Welcome to Zen Garden!") do |menu|
+        welcome = @@prompt.select("Welcome to Zen Garden!🌱") do |menu|
             menu.choice 'Sign Up'
             menu.choice 'Login'
             menu.choice 'Quit'
@@ -31,7 +31,7 @@ class CLI
             @@user = Garden.signup
             self.menu
         elsif welcome == 'Quit'
-            puts "See you later!"
+            puts "See you later! 👋 "
         end       
     end
 
@@ -50,7 +50,7 @@ class CLI
         elsif option == 'Switch User'
             self.greet
         elsif option == 'Quit'
-            puts "Bye!"
+            puts "Bye!👋 "
         end
     end
 
@@ -73,9 +73,9 @@ class CLI
 
     def view_my_garden
         system("clear")
-        puts "Welcome to #{@@user.garden_name}!"
+        puts "Welcome to #{@@user.garden_name}!🌱" 
         if @@user.plants.empty?
-            puts "Sorry you do not have any plants yet." 
+            puts "Sorry you do not have any plants yet.🙁"
             self.menu_2
         else
             puts ""
@@ -95,18 +95,15 @@ class CLI
         end
     end
 
-    
-
-
     def water_my_plants
         system("clear")
         if @@user.plants.empty?
-            puts "Sorry you do not have any plants yet." 
+            puts "Sorry you do not have any plants yet.🙁"
             self.menu_2
         else
             gp_array = @@user.gardenplants.all
 
-            option = @@prompt.select("Which plant would you like to water?") do |menu|
+            option = @@prompt.select("Which plant would you like to water?💧") do |menu|
                 x = 0
                 gp_array.each do |gp|
                     x+=1
@@ -125,7 +122,7 @@ class CLI
             elsif gp_to_water.status == "dead" || gp_to_water.status == "overwatered"
                 print "Oh no, you've overwatered your plant! Your plant is now" 
                 gp_to_water.water_plant
-                puts " #{gp_to_water.status}."
+                puts " #{gp_to_water.status}.😩" 
                 self.menu_2 
             else
                 print "Yay! You have helped your plant go from: #{gp_to_water.status} "
@@ -137,15 +134,14 @@ class CLI
     end
     
 
-    def menu_2
-        #puts ""            
+    def menu_2          
         option2 = @@prompt.select("\nWhat would you like to do next?") do |menu|
             menu.choice 'Plant in my garden'
             menu.choice 'Plant all plants'
             menu.choice 'Water All Plants'
             menu.choice 'Water My Plants'
             menu.choice 'View my garden'
-            menu.choice "Check My Plants' Status' "
+            menu.choice "Check My Plants' Status'"
             menu.choice 'Harvest my garden'
             menu.choice 'Rename my garden'
             menu.choice 'Return to Main Menu'
@@ -155,7 +151,7 @@ class CLI
             self.water_my_plants 
         elsif option2 == 'Water All Plants'
             self.water_all_plants
-        elsif option2 == "Check My Plants' Status' "
+        elsif option2 == "Check My Plants' Status'"
            self.check_my_plants_status
         elsif option2 == 'View my garden'
             self.view_my_garden
@@ -192,7 +188,7 @@ class CLI
     def check_my_plants_status
         system("clear")
         if @@user.plants.empty?
-            puts "Sorry you do not have any plants yet." 
+            puts "Sorry you do not have any plants yet.🙁" 
             self.menu_2
         else
             system("clear")
@@ -217,14 +213,14 @@ class CLI
     def water_all_plants
         system("clear")
         if @@user.plants.empty?
-            puts "Sorry you do not have any plants yet." 
+            puts "Sorry you do not have any plants yet.🙁" 
             self.menu_2
         else
             @@user.gardenplants.all.each do |gp|
                 gp.water_plant
             end
         end
-        puts "Way to go! Keep those plants healthy!"
+        puts "Way to go! Keep those plants healthy! Make sure to check on their status so you don't overwater them!"
         self.menu_2
     end
 end
