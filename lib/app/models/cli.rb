@@ -91,7 +91,8 @@ class CLI
 
     def view_my_garden
         system("clear")
-        puts "Welcome to #{@@user.garden_name}!"
+        puts @@artii.asciify("Welcome to #{@@user.garden_name}!")
+        sleep(1.0)
         if @@user.plants.empty?
             puts "Sorry you do not have any plants yet." 
             self.menu_2
