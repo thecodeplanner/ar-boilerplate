@@ -14,7 +14,7 @@ class CLI
     def welcome 
         system('clear')
         puts @@artii.asciify("Let's Play Zen Garden!")
-        sleep(1.0)
+        #sleep(1.0)
         self.greet
     end
 
@@ -64,46 +64,66 @@ class CLI
 
     def plant_in_my_garden
         system("clear")
+        plants = Plant.all
+        x = 1
         plant_selection = @@prompt.select("What would you like to plant today?") do |menu|
-            menu.choice 'Fern'
-            menu.choice 'Cactus'
-            menu.choice 'Flower'
+            plants.all.each do |plant|
+            menu.choice "#{x}.#{plant.name}"
+            x +=1
+            end
         end
+        #binding.pry
 
-        if plant_selection == 'Fern'
-            plant = Plant.all.find_by(name: "fern")
-            @@user.plant_plant_in_garden(plant)
-            puts "Nice choice! Ferns are known for their calming properties." 
-            self.menu_2
-        elsif plant_selection == 'Cactus'
-            plant = Plant.all.find_by(name: "cactus")
-            @@user.plant_plant_in_garden(plant)
-            puts "Great job! Be careful of their spikes!"
-            self.menu_2
-        elsif plant_selection == 'Flower'
-            plant = Plant.all.find_by(name: "flower")
-            @@user.plant_plant_in_garden(plant)
-            puts "It's always a good idea to wake up and smell the flowers!"
-            self.menu_2
-        end
+        plant_selection.tr!("0-9", "")
+        plant_selection.tr!(".", "")
+        #plant_selection.tr!(" ", "")
+        ups = plant_selection.to_s
+        #binding.pry
+        plant = Plant.all.find_by(name: ups)
+        @@user.plant_plant_in_garden(plant)
+        self.menu_2
+
+        # if plant_selection == 'Fern'
+        #     plant = Plant.all.find_by(name: "fern")
+        #     @@user.plant_plant_in_garden(plant)
+        #     puts "Nice choice! Ferns are known for their calming properties." 
+        #     self.menu_2
+        # elsif plant_selection == 'Cactus'
+        #     plant = Plant.all.find_by(name: "cactus")
+        #     @@user.plant_plant_in_garden(plant)
+        #     puts "Great job! Be careful of their spikes!"
+        #     self.menu_2
+        # elsif plant_selection == 'Flower'
+        #     plant = Plant.all.find_by(name: "flower")
+        #     @@user.plant_plant_in_garden(plant)
+        #     puts "It's always a good idea to wake up and smell the flowers!"
+        #     self.menu_2
+        # end
 
     end
 
     def view_my_garden
         system("clear")
-        puts @@artii.asciify("Welcome to #{@@user.garden_name}!")
-        sleep(1.0)
+        puts "Welcome to #{@@user.garden_name}!"
         if @@user.plants.empty?
             puts "Sorry you do not have any plants yet." 
             self.menu_2
         else
         puts ""
-        puts "Here are all of your plants:" 
+        puts "Here are all of your plants:"
+        puts " " 
         x = 1
         gp = @@user.gardenplants.all ## whyy???
         gp.each do |gp|
-        # @@user.gardenplants.all.each do |gp|
-            puts "#{x}. #{gp.plant.name}"
+            if x % 6 != 0
+                #print " #{x}. #{gp.plant.name} "
+                print " #{gp.plant.name} "
+            else 
+                #puts "#{x}. #{gp.plant.name}"
+                puts " #{gp.plant.name}"
+            end
+            
+            #puts "#{x}. #{gp.plant.name}"
             x += 1
             end
             self.menu_2
