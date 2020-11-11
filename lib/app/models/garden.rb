@@ -12,7 +12,7 @@ class Garden < ActiveRecord::Base
         user
     end
 
-    def self.login #user needs a way out
+    def self.login 
         found = false
         until found == true
             username = @@prompt.ask("What is your username?")
@@ -34,9 +34,7 @@ class Garden < ActiveRecord::Base
                     return false
                 end
             end
-
         end
-
     end
 
     def plant_plant_in_garden(plant)
@@ -44,19 +42,6 @@ class Garden < ActiveRecord::Base
     end
 
 end
-
-    # def see_my_plan
-    #     self.plants 
-    # end
-
-    # def plant_count
-    #     self.plants.count
-    # end
-
-    # def view
-    #     self.gardenplants
-    # end
-
 
 
   

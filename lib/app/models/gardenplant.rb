@@ -3,6 +3,7 @@ class Gardenplant < ActiveRecord::Base
     belongs_to :plant
 
     def water_plant
+
         if self.status == "seedling"
             self.status = "sprouting"
         elsif self.status == "sprouting"
@@ -13,12 +14,14 @@ class Gardenplant < ActiveRecord::Base
             self.status = "dead"
         end
         self.save
+
     end
+
 end
 
-  # def status_of_plant
-    #     self.status
-    # end
+
+
+
 
 
 
