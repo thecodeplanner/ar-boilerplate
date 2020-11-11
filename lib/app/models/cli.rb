@@ -66,7 +66,7 @@ class CLI
         system("clear")
         plants = Plant.all
         x = 1
-        plant_selection = @@prompt.select("What would you like to plant today?") do |menu|
+        plant_selection = @@prompt.select("What would you like to plant today? We have tons of plants to choose from!") do |menu|
             plants.all.each do |plant|
             menu.choice "#{x}.#{plant.name}"
             x +=1
@@ -82,24 +82,6 @@ class CLI
         plant = Plant.all.find_by(name: ups)
         @@user.plant_plant_in_garden(plant)
         self.menu_2
-
-        # if plant_selection == 'Fern'
-        #     plant = Plant.all.find_by(name: "fern")
-        #     @@user.plant_plant_in_garden(plant)
-        #     puts "Nice choice! Ferns are known for their calming properties." 
-        #     self.menu_2
-        # elsif plant_selection == 'Cactus'
-        #     plant = Plant.all.find_by(name: "cactus")
-        #     @@user.plant_plant_in_garden(plant)
-        #     puts "Great job! Be careful of their spikes!"
-        #     self.menu_2
-        # elsif plant_selection == 'Flower'
-        #     plant = Plant.all.find_by(name: "flower")
-        #     @@user.plant_plant_in_garden(plant)
-        #     puts "It's always a good idea to wake up and smell the flowers!"
-        #     self.menu_2
-        # end
-
     end
 
     def view_my_garden
@@ -110,12 +92,12 @@ class CLI
             self.menu_2
         else
         puts ""
-        puts "Here are all of your plants:"
+        puts "Wow, look at that garden! Here are all of your plants:"
         puts " " 
         x = 1
         gp = @@user.gardenplants.all ## whyy???
         gp.each do |gp|
-            if x % 6 != 0
+            if x % 24 != 0
                 #print " #{x}. #{gp.plant.name} "
                 print " #{gp.plant.name} "
             else 
@@ -146,7 +128,6 @@ class CLI
             end
             index = option.gsub(/[^\d]/,"").to_i
             index -= 1
-
             gp_to_water = gp_array[index]
             if gp_to_water.status == "grown"
                 gp_to_water.water_plant 
@@ -171,24 +152,31 @@ class CLI
         puts ""            
         option2 = @@prompt.select("\nWhat would you like to do next?") do |menu|
             menu.choice 'Plant in my garden'
+            menu.choice 'Plant all plants'
+            menu.choice 'Water All Plants'
             menu.choice 'Water My Plants'
             menu.choice 'View my garden'
             menu.choice "Check My Plants' Status' "
             menu.choice 'Harvest my garden'
             menu.choice 'Rename my garden'
             menu.choice 'Return to Main Menu'
+            
         end
         if option2 == 'Water My Plants'
             self.water_my_plants 
+        elsif option2 == 'Water All Plants'
+            self.water_all_plants
         elsif option2 == "Check My Plants' Status' "
            self.check_my_plants_status
         elsif option2 == 'View my garden'
             self.view_my_garden
         elsif option2 == 'Plant in my garden'
             self.plant_in_my_garden
+        elsif option2 == 'Plant all plants'
+            self.plant_all_plants
         elsif option2 == 'Harvest my garden'
             system("clear")
-            option3 = @@prompt.select(puts "Are you sure you wish to delete your garden?") do |menu|
+            option3 = @@prompt.select(puts "Are you sure you wish to clear your garden?") do |menu|
                 menu.choice "Yes"
                 menu.choice "No"
             end
@@ -233,6 +221,27 @@ class CLI
             self.menu_2
         end
     end
+
+    def plant_all_plants
+        Plant.all.each do |p| 
+        @@user.plant_plant_in_garden(p)
+        end
+        self.menu_2
+    end
+
+    def water_all_plants
+        system("clear")
+        if @@user.plants.empty?
+            puts "Sorry you do not have any plants yet." 
+            self.menu_2
+        else
+            @@user.gardenplants.all.each do |gp|
+                gp.water_plant
+            end
+        end
+        self.menu_2
+    end
+
 
 end
 
