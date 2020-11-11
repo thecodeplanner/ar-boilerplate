@@ -21,3 +21,5 @@ if you overwater, plant dies
 
 give more plant options 
 fix user interactions to make smooth/exciting
+
+change name of repo 

@@ -5,7 +5,7 @@ require "pry"
 
 class CLI
     @@user = nil
-    @@gardenplant = [] 
+    #@@gardenplant = [] 
     @@prompt = TTY::Prompt.new
 
     def greet
@@ -118,12 +118,22 @@ class CLI
             index = option.gsub(/[^\d]/,"").to_i
             index -= 1
             gp_to_water = gp_array[index]
+            if gp_to_water.status == "grown"
+                gp_to_water.water_plant 
+                print "Awesome, your plant is fully grown! Make sure not to overwater it now."
+                self.menu_2
+            elsif gp_to_water.status == "dead" || gp_to_water.status == "overwatered"
+                print "Oh no, you've overwatered your plant! Your plant is now" 
+                gp_to_water.water_plant
+                puts " #{gp_to_water.status}."
+                self.menu_2 
+            else
             print "Yay! You have helped your plant go from: #{gp_to_water.status} "
             gp_to_water.water_plant
             puts "to: #{gp_to_water.status}."
             self.menu_2
+            end
         end
-
     end
     
 
@@ -155,7 +165,7 @@ class CLI
             if option3 == "Yes"
                 system("clear")
                 #Gardenplant.all.select{|gp|gp.garden==@@user}
-                @@user.plants.destroy_all
+                @@user.plants.delete_all
                 @@user.save
                 puts "Sorry to see your garden go!"
                 self.menu_2

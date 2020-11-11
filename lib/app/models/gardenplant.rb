@@ -8,8 +8,9 @@ class Gardenplant < ActiveRecord::Base
         elsif self.status == "sprouting"
             self.status = "grown"
         elsif self.status == "grown"
-            self.status = "grown"
-            # maybe we want to add an over watered condition later??
+            self.status = "overwatered"
+        elsif self.status == "overwatered"
+            self.status = "dead"
         end
         self.save
     end
