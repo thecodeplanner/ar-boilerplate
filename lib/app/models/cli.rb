@@ -82,7 +82,7 @@ class CLI
             puts "Wow, look at that garden! Here are all of your plants:"
             puts " " 
             x = 0
-            gp = @@user.gardenplants.all ## whyy???
+            gp = @@user.gardenplants.all 
             gp.each do |gp|
                 x += 1
                 if x % 24 != 0
@@ -132,7 +132,6 @@ class CLI
             self.menu_2
         end
     end
-    
 
     def menu_2          
         option2 = @@prompt.select("\nWhat would you like to do next?") do |menu|
