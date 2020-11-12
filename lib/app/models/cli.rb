@@ -203,10 +203,11 @@ class CLI
     end
 
     def plant_all_plants
+        system("clear")
         Plant.all.each do |p| 
         @@user.plant_plant_in_garden(p)
         end
-        puts "Woah! That's a lot of plants!"
+        puts "Woah! That's a lot of plants! Go check out your garden!"        
         self.menu_2
     end
 
